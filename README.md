@@ -1,5 +1,5 @@
 
-# Mini-RAG de Cartas Yu-Gi-Oh!
+# Búsqueda de Cartas Yu-Gi-Oh!
 
 Este proyecto implementa un sistema de Recuperación Aumentada por Generación (RAG) sobre un corpus imagen-texto de cartas Yu-Gi-Oh!, permitiendo búsqueda por texto o imagen y respuestas generadas por un modelo.
 
