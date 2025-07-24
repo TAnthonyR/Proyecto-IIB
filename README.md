@@ -90,5 +90,5 @@ Permite:
 - Mostrar carta y similares
 - Preguntas tipo RAG como:
   - ¿Qué mazo va con [carta]?
-  - ¿Qué carta destruye/gana a [carta]?
+  - ¿Cómo se juega con [carta]?
 
