@@ -27,7 +27,7 @@ frontend/
 ## ⚙️ Instalación
 
 ```bash
-pip install -r requirements.txt
+pip install flask flask-cors requests numpy faiss-cpu pillow sentence-transformers google-generativeai
 ```
 
 Modelos utilizados:
@@ -41,7 +41,7 @@ Modelos utilizados:
 ```bash
 python cards_downloader.py
 ```
-⏱️ Toma ~1 hora (más de 10k cartas con imágenes)
+⏱️ Toma ~1 hora aprox. (más de 10k cartas con imágenes)
 
 ### 2. Generar índice CLIP (imagen-texto)
 ```bash
@@ -61,7 +61,9 @@ python api.py
 ```
 
 ## 🌐 Interfaz Web
-
+```bash
+python -m http.server 5500
+```
 Permite:
 - Búsqueda por texto o imagen
 - Mostrar carta y similares
