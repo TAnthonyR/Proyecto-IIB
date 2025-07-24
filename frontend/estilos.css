@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: white;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+.container {
+  text-align: center;
+  padding: 40px;
+  width: 100%;
+  max-width: 900px;
+}
+input[type="text"] {
+  width: 50%;
+  padding: 12px;
+  font-size: 16px;
+  margin: 20px 0;
+  border-radius: 10px;
+  border: 1px solid gray;
+  background: #e9e9e9;
+}
+.btns {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+button {
+  padding: 10px 20px;
+  background: #ddd;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+#resultado, #similares {
+  margin-top: 30px;
+}
+.card-img {
+  height: 300px;
+}
+.similares-container img {
+  height: 180px;
+  margin: 10px;
+}
+
+

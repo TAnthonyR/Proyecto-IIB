@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buscador Yu-Gi-Oh!</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Busquedá de cartas <br>de Yu-Gi-Oh!</h1>
+    <input id="texto" type="text" placeholder="Ingresé Búsqueda"/>
+    <div class="btns">
+      <button onclick="buscarTexto()">Buscar</button>
+      <button onclick="document.getElementById('imgInput').click()">Buscar con una imagen</button>
+    </div>
+    <input type="file" id="imgInput" accept="image/*" onchange="buscarImagen()" hidden>
+    <div id="resultado"></div>
+    <div id="similares"></div>
+
+    <!-- Área para mostrar respuestas del RAG -->
+    <div id="rag-respuesta" style="white-space: pre-line; margin-top: 20px;"></div>
+
+  <script src="app.js"></script>
+  </body>
+</html>
