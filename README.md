@@ -37,9 +37,9 @@ Modelos utilizados:
 
 ## 🧠 Comandos clave
 
-### 1. Descargar las cartas Yu-Gi-Oh!
+### 1. Descargar las cartas Yu-Gi-Oh! (genera la carpeta data/cartas)
 ```bash
-python cards_downloader.py
+python cards_downloader.py 
 ```
 ⏱️ Toma ~1 hora aprox. (más de 10k cartas con imágenes)
 
@@ -55,15 +55,36 @@ python prepare_rag_index.py
 ```
 Salida: `rag_faiss.index`, `rag_nombres.pkl`, `rag_textos.pkl`
 
-### 4. Ejecutar backend Flask
+## 🟥 Posible error al ejecutar el backend
+
+- Error: 
+PS C:..\backend> python api.py
+Using a slow image processor as `use_fast` is unset and a slow processor was saved with this model. `use_fast=True` will be the default behavior in v4.52, even if the model was saved with a slow processor. This will result in minor differences in outputs. You'll still be able to use a slow processor with `use_fast=False`.
+Traceback (most recent call last):
+  File "C:\EPN\Semestre_7\RI\proyectoIIB\backend\api.py", line 6, in <module>
+    from rag_chat import responder_pregunta
+  File "C:\EPN\Semestre_7\RI\proyectoIIB\backend\rag_chat.py", line 8, in <module>
+    genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+                            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 714, in __getitem__
+KeyError: 'GOOGLE_API_KEY'
+
+- Poner en terminal de visual code y se arregla el problema:
+```bash
+$env:GOOGLE_API_KEY="Colocar API"
+```
+
+### 🖲️ Ejecutar en ruta del backend Flask
 ```bash
 python api.py
 ```
 
-## 🌐 Interfaz Web
+## 🌐 Ejcutar en ruta de la Interfaz Web
 ```bash
 python -m http.server 5500
 ```
+En navegador ingresar -> localhost:5500
+
 Permite:
 - Búsqueda por texto o imagen
 - Mostrar carta y similares
