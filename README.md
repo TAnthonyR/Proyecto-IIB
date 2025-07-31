@@ -10,7 +10,7 @@ proyectoIIB-final/
 ├── backend/
 │   ├── api.py                       # API Flask principal
 │   ├── cards_downloader.py         # Descarga cartas desde la API oficial
-│   ├── build_all_fais             # Genera vectores de imagen (CLIP + FAISS) y texto
+│   ├── build_all_faiss_indexes.py  # Genera vectores de imagen (CLIP + FAISS) y texto
 │   ├── search_text.py              # Búsqueda basada en descripciones
 │   ├── search_image_clip.py        # Búsqueda basada en imagen
 │   ├── faiss_names.pkl             # Nombres para búsqueda por texto
@@ -45,7 +45,7 @@ python backend/cards_downloader.py
 
 ### 2. Generar Índice de Imágenes (CLIP + FAISS)
 ```bash
-python backend/build_all_indexes.py
+python backend/build_all_fais_indexes.py
 ```
 📦 Genera:
 - `faiss_clip.index`
