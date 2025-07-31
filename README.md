@@ -1,5 +1,5 @@
 
-# Buscador de Cartas Yu-Gi-Oh! (Texto + Imagen)
+# Buscador de Cartas Yu-Gi-Oh!
 
 Este proyecto implementa un sistema de búsqueda híbrido para cartas Yu-Gi-Oh!, permitiendo consultas por texto y por imagen. También se incluye un resumen generado automáticamente de la carta principal utilizando Gemini.
 
