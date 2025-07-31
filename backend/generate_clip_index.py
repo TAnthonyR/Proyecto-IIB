@@ -1,37 +1,36 @@
-import os
+import faiss
 import numpy as np
 import pickle
-import faiss
 from PIL import Image
 from transformers import CLIPProcessor, CLIPModel
 
-model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+# --- Cargar modelo CLIP y procesador ---
+clip_model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
+# --- Cargar índice FAISS y nombres ---
+index = faiss.read_index("faiss_clip.index")
+with open("faiss_nombres.pkl", "rb") as f:
+    NOMBRES = pickle.load(f)
+
+# --- Función para vectorizar imagen nueva ---
 def vectorizar_imagen_clip(path):
     image = Image.open(path).convert("RGB")
-    inputs = processor(images=image, return_tensors="pt", padding=True)
-    outputs = model.get_image_features(**inputs)
+    inputs = clip_processor(images=image, return_tensors="pt", padding=True)
+    outputs = clip_model.get_image_features(**inputs)
     return outputs.detach().numpy()[0]
 
-carpeta = "data/cartas"
-vectores = []
-nombres = []
+# --- Búsqueda por imagen ---
+def buscar_similares_por_imagen_clip(path, top_k=5):
+    vector = vectorizar_imagen_clip(path).reshape(1, -1).astype("float32")
+    _, indices = index.search(vector, top_k)
 
-for archivo in os.listdir(carpeta):
-    if archivo.endswith(".jpg"):
-        ruta = os.path.join(carpeta, archivo)
-        try:
-            v = vectorizar_imagen_clip(ruta)
-            vectores.append(v)
-            nombres.append(archivo.replace(".jpg", ""))
-        except:
-            continue
-
-vectores = np.array(vectores).astype("float32")
-index = faiss.IndexFlatL2(vectores.shape[1])
-index.add(vectores)
-
-faiss.write_index(index, "faiss_clip.index")
-with open("faiss_nombres.pkl", "wb") as f:
-    pickle.dump(nombres, f)
+    resultados = []
+    for i in indices[0]:
+        nombre = NOMBRES[i]
+        nombre_archivo = nombre + ".jpg"
+        resultados.append({
+            "name": nombre,
+            "image_url": f"/data/cartas/{nombre_archivo}"
+        })
+    return resultados

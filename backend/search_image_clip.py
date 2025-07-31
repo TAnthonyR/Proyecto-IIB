@@ -23,7 +23,7 @@ def buscar_similares_por_imagen_clip(path, top_k=1):
 
     D, I = index.search(np.array([vector]), top_k)
     idx = I[0][0]
-    nombre = nombres[idx].replace("_", " ")
+    nombre = nombres[idx]  # sin reemplazar
     carta = buscar_por_nombre(nombre)
     similares = buscar_similares_por_nombre(nombre)
     return {"carta": carta, "similares": similares}

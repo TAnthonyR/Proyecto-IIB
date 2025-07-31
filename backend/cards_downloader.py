@@ -13,7 +13,7 @@ def descargar_cartas():
     response = requests.get(URL)
     cartas = response.json()["data"]
 
-    for carta in cartas:
+    for carta in cartas[:2000]:
         nombre = limpiar_nombre(carta["name"])
         if "card_images" in carta:
             url_imagen = carta["card_images"][0]["image_url"]
