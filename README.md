@@ -1,4 +1,4 @@
-# Buscador de cartas Yu-Gi-Oh! por texto e imagen
+# Proyecto — Buscador de cartas Yu-Gi-Oh!
 
 Aplicación académica de recuperación multimodal. Busca cartas por nombre o descripción con embeddings de texto y utiliza CLIP para encontrar una carta visualmente similar a una imagen. Muestra la carta principal y otras relacionadas en una interfaz web.
 
@@ -6,9 +6,13 @@ Aplicación académica de recuperación multimodal. Busca cartas por nombre o de
 
 Búsqueda por texto y por imagen, extraídas de Grupo8_Informe_ProyectoIIB.pdf. Corresponden a la versión académica original; la demo actual usa descripciones reales del catálogo y requiere configurar Gemini para las respuestas generativas.
 
-![Búsqueda por texto](preview-texto.jpg)
+### Captura del funcionamiento: búsqueda de cartas por texto
 
-![Búsqueda por imagen](preview-imagen.jpg)
+![Captura del funcionamiento: búsqueda de cartas por texto](preview-texto.jpg)
+
+### Captura del funcionamiento: búsqueda de cartas por imagen
+
+![Captura del funcionamiento: búsqueda de cartas por imagen](preview-imagen.jpg)
 
 ## Cómo funciona
 
@@ -93,4 +97,4 @@ Trabajo académico del Grupo 8: Wilson Inga, Anthony Reinoso y Sergio Vite. Proy
 
 ## Tamaño e historial
 
-El árbol actual contiene código y capturas de muestra. Las imágenes e índices antiguos siguen recuperables en el historial. Para descargar únicamente la versión reciente usa `git clone --depth 1 https://github.com/TAnthonyR/Proyecto-IIB.git`.
+El árbol actual contiene código y capturas de muestra. Las imágenes e índices antiguos siguen recuperables en el historial. Para descargar únicamente la versión reciente usa `git clone --depth 1 https://github.com/TAnthonyR/Proyecto-Buscador-de-cartas-Yu-Gi-Oh.git`.
