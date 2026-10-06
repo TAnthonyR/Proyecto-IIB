@@ -89,4 +89,8 @@ En Linux/macOS usa `export GOOGLE_API_KEY=...` y `export GEMINI_MODEL=...`. `.en
 
 Prototipo local, no servicio de producción. La similitud visual no garantiza identificación exacta. Los resultados dependen de la colección descargada; las imágenes fallidas se excluyen del índice para mantener alineados nombres y vectores. Los modelos externos se descargan por sus bibliotecas y conservan sus condiciones. Yu-Gi-Oh!, las cartas y sus imágenes pertenecen a sus titulares; este proyecto no está afiliado a Konami. Se acredita YGOPRODeck por los datos y servicios.
 
-Proyecto publicado en el portafolio de [Anthony Reinoso](https://github.com/TAnthonyR). `build_faiss_index.py` y `generate_clip_index.py` son variantes históricas; el procedimiento principal utiliza `build_all_faiss_indexes.py`.
+Trabajo académico del Grupo 8: Wilson Inga, Anthony Reinoso y Sergio Vite. Proyecto publicado en el portafolio de [Anthony Reinoso](https://github.com/TAnthonyR). `build_faiss_index.py` y `generate_clip_index.py` son variantes históricas; el procedimiento principal utiliza `build_all_faiss_indexes.py`.
+
+## Tamaño e historial
+
+El árbol actual contiene código y capturas de muestra. Las imágenes e índices antiguos siguen recuperables en el historial. Para descargar únicamente la versión reciente usa `git clone --depth 1 https://github.com/TAnthonyR/Proyecto-IIB.git`.
