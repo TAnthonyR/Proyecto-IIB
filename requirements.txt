@@ -1,0 +1,9 @@
+flask
+flask-cors
+requests
+numpy
+faiss-cpu
+pillow
+transformers>=4.40,<5
+torch
+sentence-transformers

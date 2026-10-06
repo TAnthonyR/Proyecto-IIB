@@ -1,84 +1,92 @@
+# Buscador de cartas Yu-Gi-Oh! por texto e imagen
 
-# Buscador de Cartas Yu-Gi-Oh!
+Aplicación académica de recuperación multimodal. Busca cartas por nombre o descripción con embeddings de texto y utiliza CLIP para encontrar una carta visualmente similar a una imagen. Muestra la carta principal y otras relacionadas en una interfaz web.
 
-Este proyecto implementa un sistema de búsqueda híbrido para cartas Yu-Gi-Oh!, permitiendo consultas por texto y por imagen. También se incluye un resumen generado automáticamente de la carta principal utilizando Gemini.
+## Capturas del informe original
 
-## 📁 Estructura del Proyecto
+Búsqueda por texto y por imagen, extraídas de Grupo8_Informe_ProyectoIIB.pdf. Corresponden a la versión académica original; la demo actual usa descripciones reales del catálogo y requiere configurar Gemini para las respuestas generativas.
 
+![Búsqueda por texto](preview-texto.jpg)
+
+![Búsqueda por imagen](preview-imagen.jpg)
+
+## Cómo funciona
+
+1. Descarga metadatos e imágenes desde YGOPRODeck y los guarda localmente.
+2. Crea embeddings visuales con `openai/clip-vit-base-patch32` y un índice FAISS.
+3. El buscador de texto genera embeddings con `all-MiniLM-L6-v2` al iniciar.
+4. Flask expone la búsqueda y sirve las imágenes; JavaScript presenta los resultados.
+5. Opcionalmente Gemini resume la descripción. Sin una clave y un modelo configurados, se muestra la descripción original y la búsqueda funciona igual.
+
+## Repositorio liviano
+
+GitHub contiene código, dependencias y pasos de preparación. Las imágenes, metadatos, índices FAISS, archivos pickle y modelos descargados se crean en la computadora del usuario y no se suben. No necesitas subir un ZIP grande ni las miles de cartas.
+
+## Estructura
+
+```text
+backend/
+  cards_downloader.py          Descarga imágenes y descripciones reales
+  build_all_faiss_indexes.py    Prepara metadatos e índice de imágenes
+  search_text.py               Búsqueda semántica y por nombre
+  search_image_clip.py         Consulta visual con CLIP
+  api.py                       API Flask
+  data/cartas/                 Imágenes generadas localmente
+frontend/                      Interfaz HTML, CSS y JavaScript
+requirements.txt
+.env.example
 ```
-proyectoIIB-final/
-├── backend/
-│   ├── api.py                       # API Flask principal
-│   ├── cards_downloader.py         # Descarga cartas desde la API oficial
-│   ├── build_all_faiss_indexes.py  # Genera vectores de imagen (CLIP + FAISS) y texto
-│   ├── search_text.py              # Búsqueda basada en descripciones
-│   ├── search_image_clip.py        # Búsqueda basada en imagen
-│   ├── faiss_names.pkl             # Nombres para búsqueda por texto
-│   ├── faiss_descriptions.pkl      # Descripciones de cartas
-│   ├── faiss_clip.index            # Índice FAISS (CLIP - imágenes)
-│   ├── faiss_nombres.pkl           # Nombres para búsqueda por imagen
-│   └── data/
-│       └── cartas/                 # Carpeta local con imágenes de las cartas
-├── frontend/
-│   ├── index.html                  # Interfaz gráfica
-│   ├── app.js                      # Lógica JS para interacción con backend
-│   └── estilos.css                 # Estilos personalizados
-```
 
-## ⚙️ Instalación y Requisitos
+## 1. Instalar
+
+Se recomienda Python 3.11. Desde la raíz:
 
 ```bash
-pip install flask flask-cors requests numpy faiss-cpu pillow transformers google-generativeai
+python -m venv .venv
+# Windows PowerShell:
+.venv/Scripts/Activate.ps1
+# Linux/macOS:
+# source .venv/bin/activate
+python -m pip install -r requirements.txt
 ```
 
-### Modelos Utilizados
-- `openai/clip-vit-base-patch32` (para embeddings de imagen)
-- Google Gemini Flash (`GOOGLE_API_KEY` desde `.env` o variable de entorno)
-
-## 🔧 Comandos Importantes
-
-### 1. Descargar Cartas Yu-Gi-Oh! (con imágenes)
-```bash
-python backend/cards_downloader.py
-```
-📌 Se descargan ~2000 cartas en la carpeta `backend/data/cartas`
-
-### 2. Generar Índice de Imágenes (CLIP + FAISS)
-```bash
-python backend/build_all_fais_indexes.py
-```
-📦 Genera:
-- `faiss_clip.index`
-- `faiss_nombres.pkl`
-
-## 🟡 Ejecutar el Backend Flask
-
-Antes de ejecutar, asegúrate de exportar la API key de Gemini:
+## 2. Descargar una muestra y generar índices
 
 ```bash
-$env:GOOGLE_API_KEY="TU_API_KEY_AQUI"  # En PowerShell
+python backend/cards_downloader.py --limit 100
+python backend/build_all_faiss_indexes.py
 ```
 
-Luego ejecuta el backend desde la carpeta `backend`:
+Para una colección mayor, cambia `100` por `2000` y vuelve a construir los índices. La primera preparación necesita Internet para los datos y modelos; consume espacio y puede tardar varios minutos o más según la computadora. La descarga reutiliza archivos locales y espera entre imágenes. YGOPRODeck es un proveedor externo, no una API oficial de Konami: [guía de su API](https://api.ygoprodeck.com/api-guide/).
+
+## 3. Iniciar el backend
 
 ```bash
-python api.py
+python backend/api.py
 ```
 
-## 🌐 Ejecutar la Interfaz Web
-
-Desde la carpeta `frontend`, usa un servidor simple:
+La API escucha en http://127.0.0.1:5000. En otra terminal, con el entorno virtual activado:
 
 ```bash
-python -m http.server 5500
+python -m http.server 5500 --directory frontend
 ```
 
-Abre en el navegador:  
-📎 `http://localhost:5500`
+Abre http://127.0.0.1:5500. Busca por el nombre de una carta que aparezca en `backend/data/cards.json`, por una descripción en inglés o sube una imagen de prueba. Una muestra de 100 cartas solo puede recuperar cartas de esa muestra.
 
-## ✨ Funcionalidades Soportadas
+## Resúmenes opcionales con Gemini
 
-- ✅ Buscar carta por texto (por nombre, tipo o contenido en la descripción)
-- ✅ Buscar carta por imagen (mediante CLIP)
-- ✅ Ver imagen y resumen de la carta principal (usando Gemini)
-- ✅ Mostrar cartas similares con sus imágenes y descripciones
+Configura en PowerShell una clave propia y el identificador de un modelo disponible en tu cuenta:
+
+```powershell
+$env:GOOGLE_API_KEY="TU_CLAVE"
+$env:GEMINI_MODEL="IDENTIFICADOR_DEL_MODELO"
+python backend/api.py
+```
+
+En Linux/macOS usa `export GOOGLE_API_KEY=...` y `export GEMINI_MODEL=...`. `.env.example` solo documenta las variables; el servidor las lee del entorno. Si activas esta opción, se envía a Google la descripción pública de la carta solicitada y puede consumir cuota o generar cargos según tu cuenta.
+
+## Limitaciones y créditos
+
+Prototipo local, no servicio de producción. La similitud visual no garantiza identificación exacta. Los resultados dependen de la colección descargada; las imágenes fallidas se excluyen del índice para mantener alineados nombres y vectores. Los modelos externos se descargan por sus bibliotecas y conservan sus condiciones. Yu-Gi-Oh!, las cartas y sus imágenes pertenecen a sus titulares; este proyecto no está afiliado a Konami. Se acredita YGOPRODeck por los datos y servicios.
+
+Proyecto publicado en el portafolio de [Anthony Reinoso](https://github.com/TAnthonyR). `build_faiss_index.py` y `generate_clip_index.py` son variantes históricas; el procedimiento principal utiliza `build_all_faiss_indexes.py`.
