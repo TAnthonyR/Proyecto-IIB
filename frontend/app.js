@@ -36,17 +36,24 @@ function mostrarCarta(carta, divId) {
 function mostrarSimilares(similares) {
   const div = document.getElementById("similares");
   const host = "http://localhost:5000";
-  div.innerHTML = `<h3>Resultados similares:</h3><div class="similares-grid"></div>`;
+
+  // Título + contenedor horizontal
+  div.innerHTML = `
+    <h3>Resultados similares:</h3>
+    <div class="similares-grid" style="
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 20px;
+      overflow-x: auto;
+      padding: 10px;
+    "></div>
+  `;
 
   const grid = div.querySelector(".similares-grid");
-  grid.style.display = "flex";
-  grid.style.flexWrap = "wrap";
-  grid.style.gap = "20px";
-  grid.style.justifyContent = "center";
 
   similares.forEach(carta => {
     const cardHTML = `
-      <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; text-align: center;">
+      <div style="flex: 0 0 auto; width: 200px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; text-align: center;">
         <img src="${host + carta.image_url}" alt="${carta.name}" style="width: 100%; height: auto; border-radius: 5px;">
         <h4 style="margin-top: 10px;">${carta.name}</h4>
         <p style="font-size: 13px;">${carta.desc}</p>
@@ -57,8 +64,15 @@ function mostrarSimilares(similares) {
 }
 
 
+
 async function buscarImagen() {
+  
+  document.getElementById("texto").value = ""; // Limpiar el campo de texto
   const input = document.getElementById("imgInput");
+  if (!input.files.length) {
+    document.getElementById("resultado").textContent = "Selecciona una imagen antes de buscar.";
+    return;
+  }
   const formData = new FormData();
   formData.append("image", input.files[0]);
   const res = await fetch("http://localhost:5000/api/similar", {
@@ -66,6 +80,10 @@ async function buscarImagen() {
     body: formData
   });
   const data = await res.json();
+  if (data.error) {
+    document.getElementById("resultado").textContent = data.error;
+    return;
+  }
   mostrarCarta(data.carta, "resultado");
   mostrarSimilares(data.similares);
   cargarDescripcion(data.carta.name);
